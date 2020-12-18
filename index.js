@@ -302,7 +302,7 @@ function proceed(config) {
 			}
 		};
 		
-		fsquery.write("repos.xml", xml.toXml(result));
+		fsquery.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(result));
 	});
 
 }
