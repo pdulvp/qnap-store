@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <plugins>
+  <cachechk>20201218180253</cachechk>
+  <item>
+   <name>Standby</name>
+   <internalName>pdulvp-nas-standby</internalName>
+   <changeLog></changeLog>
+   <category>pdulvp</category>
+   <type>Outils</type>
+   <icon80>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby.gif</icon100>
+   <description><![CDATA[Put your NAS in Standby mode directly through HD-Station]]></description>
+   <fwVersion>4.3.0</fwVersion>
+   <version>0.1</version>
+   <platform>
+    <platformID>TS-NASX86</platformID>
+    <location>https://github.com/pdulvp/qnap-standby/releases/download/0.1/pdulvp-nas-standby_0.1.qpkg</location>
+   </platform>
+   <publishedDate>2020/12/18</publishedDate>
+   <maintainer><![CDATA[pdulvp]]></maintainer>
+   <developer><![CDATA[pdulvp]]></developer>
+   <forumLink><![CDATA[pdulvp]]></forumLink>
+   <language><![CDATA[English]]></language>
+  </item>
+ </plugins>
