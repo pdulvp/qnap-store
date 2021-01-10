@@ -187,17 +187,17 @@ var qpkg = {
 		item.name = repository.configuration["QPKG_DISPLAY_NAME"];
 		item.internalName = repository.configuration["QPKG_NAME"];
 		item.changeLog = repository.releases[0].html_url;
-		item.category = "pdulvp addon";
-		item.type = "Outils de dévelopement";
+		item.category = "pdulvp";
+		item.type = "Outils";
 		item.icon80 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/icons/${item.internalName}_80.gif`;
 		item.icon100 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/icons/${item.internalName}.gif`;
 		item._description = repository.configuration["QPKG_SUMMARY"];
 		item.fwVersion = repository.configuration["QTS_MINI_VERSION"];
 		item.version = repository.configuration["QPKG_VER"];
 		item.platform = { };
-		item.platform.platformID = "TS-X51";
+		item.platform.platformID = "TS-NASX86";
 		item.platform.location = repository.releases[0].assets[0].browser_download_url;
-		item.publishedDate = repository.releases[0].created_at.substring(0, 8);
+		item.publishedDate = repository.releases[0].created_at.substring(0, 10).replace(/-/g, '/');
 		item._maintainer = repository.configuration["QPKG_AUTHOR"];
 		item._developer = repository.configuration["QPKG_AUTHOR"];
 		item._forumLink = repository.configuration["QPKG_AUTHOR"];
@@ -295,9 +295,10 @@ function proceed(config) {
 		return Promise.resolve(repositories);
 		
 	}).then(repositories => {
+		let cachechk = new Date().toISOString().replace(/-/g, '').replace(/[T\\:]/g, '').replace(/\..+/, '');
 		let result = { 
 			plugins : {
-				cachechk: "2020",
+				cachechk: cachechk,
 				item: repositories.map(r => r.item)
 			}
 		};
