@@ -1,107 +1,16 @@
 const https = require('https')
 var fs = require("fs");
 var fsh = require("@pdulvp/fsh");
-
-//helpers for http requests
-var httpq = {
-	
-	downloadFile : function(host, path, outputFile) {
-		return new Promise((resolve, reject) => {
-			var options = {
-				host: host,
-				port: 443,
-				path: path
-			};
-		
-			var file = fs.createWriteStream(outputFile);
-			https.get(options, function(res) {
-			res.on('data', function(data) {
-				file.write(data);
-			}).on('end', function() {
-				file.end();
-				resolve(outputFile);
-			});
-			}).on('error', function(e) {
-				console.log("Got error: " + e.message);
-				reject(e);
-			});
-		});
-	},
-
-	request: function(host, path, kind, object, method, user, password) {
-		return new Promise((resolve, reject) => {
-			
-			var data = undefined; 
-			if (object != undefined) {
-				data = JSON.stringify(object);
-			}
-			var options = {
-				host: host,
-				port: 443,
-				path: path,
-				method: method,
-				headers: { }
-			};
-			if (data != undefined) {
-				options.headers['Content-Type'] = 'application/json';
-				options.headers['Content-Length'] = Buffer.byteLength(data);
-			}
-			
-			if (user) {
-				options.headers["User-Agent"] = user;
-			}
-			if (password) {
-				options.headers["Authorization"] = "Basic "+Buffer.from(user+":"+password).toString("base64");
-			}
-			
-			var req = https.request(options, function(res) {
-			    let body = '';
-			    res.on('data', function(chunk) {
-			    	body += chunk;
-			    });
-			    res.on('end', function() {
-					//console.log(JSON.stringify(res.headers, null, " "));
-					if (kind == "json") {
-						result = JSON.parse(body);
-					} else {
-						result = body;
-					}
-					if (result != undefined && result.message != undefined && result.message.includes("Bad credentials")) {
-						reject(result);
-					} else {
-						resolve(result);
-					}
-			    });
-				
-			}).on('error', function(e) {
-				console.log("Got error: " + e.message);
-				reject(e);
-			});
-
-			if (data != undefined) {
-				req.write(data);
-			}
-			req.end();
-		});
-	},
-	
-	get: function(host, path) {
-		return httpq.request(host, path, "json", undefined, "GET", httpq.user, httpq.password);
-	},
-	
-	getFile: function(host, path) {
-		return httpq.request(host, path, undefined, undefined, "GET", httpq.user, httpq.password);
-	},
-};
+var httph = require("@pdulvp/httph");
 
 var github = {
 	
 	getRepositoriesByTopic: function(topic) {
 		return new Promise((resolve, reject) => {
 			//we suppose that there is at most 3 pages of milestones
-			return Promise.all([1, 2, 3].map(m => httpq.get("api.github.com", '/search/repositories?q=topic:'+topic+'&sort=stars&order=desc&page='+m))).then(e => {
+			return Promise.all([1, 2, 3].map(m => httph.get("api.github.com", '/search/repositories?q=topic:'+topic+'&sort=stars&order=desc&page='+m))).then(e => {
 				let resultPages = e.reduce(function (arr, row) {
-					return arr.concat(row.items);
+					return arr.concat(JSON.parse(row).items);
 				  }, []);
 				resolve(resultPages);
 			}).catch(e => {
@@ -117,8 +26,8 @@ var github = {
 	releases: function(repository) {https://api.github.com/repos/pdulvp/qnap-standby/releases
 		return new Promise((resolve, reject) => {
 			//we suppose that there is at most 3 pages of releases
-			return httpq.get("api.github.com", `/repos/${repository.full_name}/releases`).then(e => {
-				repository.releases = e;
+			return httph.get("api.github.com", `/repos/${repository.full_name}/releases`).then(e => {
+				repository.releases = JSON.parse(e);
 				resolve(repository);
 			}).catch(e => {
 				reject(e);
@@ -222,8 +131,8 @@ var xml = {
 fsh.read("config.json").then(e => proceed(JSON.parse(e))).catch(e => { console.log(e); });
 
 function proceed(config) {
-	httpq.user = config.user;
-	httpq.password = config.password;
+	httph.user = config.user;
+	httph.password = config.password;
 
 	github.getRepositoriesByTopic("qnap-store").then(e => {
 		return github.filterByOwner(e, "pdulvp");
@@ -250,7 +159,7 @@ function proceed(config) {
 	}).then(repositories => {
 		// fetch and parse qpkg.cfg
 		return new Promise((resolve, reject) => {
-			return Promise.all(repositories.map(r => httpq.getFile("raw.githubusercontent.com", r.configName).then(e => {
+			return Promise.all(repositories.map(r => httph.get("raw.githubusercontent.com", r.configName).then(e => {
 				r.configuration = qpkg.toJson(e);
 				return Promise.resolve(r);
 				

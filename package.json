@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@pdulvp/fsh": "^1.0.0"
+    "@pdulvp/fsh": "^1.0.0",
+    "@pdulvp/httph": "^1.0.0"
   }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20201218180253</cachechk>
+  <cachechk>20210110214951</cachechk>
   <item>
    <name>Standby</name>
    <internalName>pdulvp-nas-standby</internalName>
@@ -22,5 +22,8 @@
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[pdulvp]]></forumLink>
    <language><![CDATA[English]]></language>
+   <snapshot></snapshot>
+   <bannerImg></bannerImg>
+   <tutorialLink><![CDATA[]]></tutorialLink>
   </item>
  </plugins>
