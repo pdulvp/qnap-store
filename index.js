@@ -1,29 +1,6 @@
 const https = require('https')
 var fs = require("fs");
-
-//helpers for files manipulation
-var fsquery = {
-		
-	write: function (filename, data) {
-		return new Promise(function(resolve, reject) {
-			fs.writeFile(filename, data, 'UTF-8', function(err) {
-				if (err) reject(err);
-				else resolve(data);
-			});
-		});
-	},
-	
-	read: function(filename) {
-		return new Promise(function(resolve, reject) {
-			fs.readFile(filename, 'UTF-8', function(err, data){
-				if (err) 
-					reject(err); 
-				else 
-					resolve(data);
-			});
-		});
-	}
-};
+var fsh = require("@pdulvp/fsh");
 
 //helpers for http requests
 var httpq = {
@@ -242,7 +219,7 @@ var xml = {
 }
 
 //Load configuration and proceed
-fsquery.read("config.json").then(e => proceed(JSON.parse(e))).catch(e => { console.log(e); });
+fsh.read("config.json").then(e => proceed(JSON.parse(e))).catch(e => { console.log(e); });
 
 function proceed(config) {
 	httpq.user = config.user;
@@ -303,7 +280,7 @@ function proceed(config) {
 			}
 		};
 		
-		fsquery.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(result));
+		fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(result));
 	});
 
 }
