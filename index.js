@@ -10,7 +10,6 @@ var SNAPSHOTS = {
 	"jellyfin-qnap-intel": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
 }
 
-
 var github = {
 	
 	getRepositoriesByTopic: function(topic) {
@@ -78,7 +77,6 @@ var qpkg = {
 		if (release == null) {
 			return null;
 		}
-		console.log(release);
 		let tag = release.tag_name;
 		let item = {};
 		item.name = release.configuration["QPKG_DISPLAY_NAME"];
@@ -99,7 +97,7 @@ var qpkg = {
 		item._developer = release.configuration["QPKG_AUTHOR"];
 		item._forumLink = "https://github.com/pdulvp";
 		item._language = "English";
-		item.snapshot = SNAPSHOTS[repository.full_name] ? SNAPSHOTS[repository.full_name] : "";
+		item.snapshot = SNAPSHOTS[repository.name] != null ? SNAPSHOTS[repository.name] : "";
 		item.bannerImg = "";
 		item.changeLog = release.html_url;
 		item._tutorialLink = "";
@@ -194,12 +192,14 @@ function proceed(config) {
 			r.item = qpkg.toRepoMetadata(r, r.latestRelease);
 		});
 		let repos = toRepos(repositories);
+		console.log(JSON.stringify(repos, null, " "));
 		fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(repos));
 
 		repositories.forEach(r => {
 			r.item = qpkg.toRepoMetadata(r, r.latestPrerelease != null ? r.latestPrerelease: r.latestRelease);
 		});
 		repos = toRepos(repositories);
+		console.log(JSON.stringify(repos, null, " "));
 		fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(repos));
 	});
 }
