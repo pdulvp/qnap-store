@@ -3,6 +3,10 @@ var fs = require("fs");
 var fsh = require("@pdulvp/fsh");
 var httph = require("@pdulvp/httph");
 
+var CUSTOM_CONFIGS = {
+	"jellyfin-qnap-intel": "jellyfin/qpkg.cfg"
+}
+
 var github = {
 	
 	getRepositoriesByTopic: function(topic) {
@@ -23,7 +27,7 @@ var github = {
 		return Promise.resolve(repositories.filter(t => t.owner.login == owner));
 	},
 	
-	releases: function(repository) {https://api.github.com/repos/pdulvp/qnap-standby/releases
+	releases: function(repository) {
 		return new Promise((resolve, reject) => {
 			//we suppose that there is at most 3 pages of releases
 			return httph.get("api.github.com", `/repos/${repository.full_name}/releases`).then(e => {
@@ -68,11 +72,14 @@ var qpkg = {
 	},
 	
 	toRepoMetadata: function (repository) {
-		let tag = repository.releases[0].tag_name;
+		if (repository.latestRelease == null) {
+			return null;
+		}
+		let tag = repository.latestRelease.tag_name;
 		let item = {};
 		item.name = repository.configuration["QPKG_DISPLAY_NAME"];
 		item.internalName = repository.configuration["QPKG_NAME"];
-		item.changeLog = repository.releases[0].html_url;
+		item.changeLog = repository.latestRelease.html_url;
 		item.category = "pdulvp";
 		item.type = "Outils";
 		item.icon80 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/icons/${item.internalName}_80.gif`;
@@ -82,8 +89,8 @@ var qpkg = {
 		item.version = repository.configuration["QPKG_VER"];
 		item.platform = { };
 		item.platform.platformID = "TS-NASX86";
-		item.platform.location = repository.releases[0].assets[0].browser_download_url;
-		item.publishedDate = repository.releases[0].created_at.substring(0, 10).replace(/-/g, '/');
+		item.platform.location = repository.latestRelease.assets[0].browser_download_url;
+		item.publishedDate = repository.latestRelease.created_at.substring(0, 10).replace(/-/g, '/');
 		item._maintainer = repository.configuration["QPKG_AUTHOR"];
 		item._developer = repository.configuration["QPKG_AUTHOR"];
 		item._forumLink = repository.configuration["QPKG_AUTHOR"];
@@ -152,7 +159,13 @@ function proceed(config) {
 	}).then(repositories => {
 		// retrieve qpkg.cfg url
 		repositories.forEach(r => {
-			r.configName = github.fileFromTag(r, r.releases[0].tag_name, "qpkg.cfg");
+			let config = "qpkg.cfg";
+			if (CUSTOM_CONFIGS[r.name] != null) {
+				config = CUSTOM_CONFIGS[r.name];
+			}
+			console.log(r);
+			r.latestRelease = r.releases.filter(r => !r.prerelease && !r.draft)[0];
+			r.configName = github.fileFromTag(r, r.latestRelease.tag_name, config);
 		});
 		return Promise.resolve(repositories);
 		
@@ -188,10 +201,8 @@ function proceed(config) {
 				item: repositories.map(r => r.item)
 			}
 		};
-		
+		result.plugins.item = result.plugins.item.filter(item => item != null);
+		console.log(JSON.stringify(result, null, " "));
 		fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n`+xml.toXml(result));
 	});
-
 }
-
-	
