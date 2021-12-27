@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20211227112000</cachechk>
+  <cachechk>20211227112222</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
@@ -22,7 +22,7 @@
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
    <language><![CDATA[English]]></language>
-   <snapshot></snapshot>
+   <snapshot>https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG</snapshot>
    <bannerImg></bannerImg>
    <tutorialLink><![CDATA[]]></tutorialLink>
   </item>
