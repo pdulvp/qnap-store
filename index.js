@@ -6,6 +6,10 @@ var httph = require("@pdulvp/httph");
 var CUSTOM_CONFIGS = {
 	"jellyfin-qnap-intel": "jellyfin/qpkg.cfg"
 }
+var SNAPSHOTS = {
+	"jellyfin-qnap-intel": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
+}
+
 
 var github = {
 	
@@ -74,6 +78,7 @@ var qpkg = {
 		if (release == null) {
 			return null;
 		}
+		console.log(release);
 		let tag = release.tag_name;
 		let item = {};
 		item.name = release.configuration["QPKG_DISPLAY_NAME"];
@@ -92,11 +97,11 @@ var qpkg = {
 		item.publishedDate = release.created_at.substring(0, 10).replace(/-/g, '/');
 		item._maintainer = release.configuration["QPKG_AUTHOR"];
 		item._developer = release.configuration["QPKG_AUTHOR"];
-		item._forumLink = release.configuration["QPKG_AUTHOR"];
+		item._forumLink = "https://github.com/pdulvp";
 		item._language = "English";
-		item.snapshot = "";
+		item.snapshot = SNAPSHOTS[repository.full_name] ? SNAPSHOTS[repository.full_name] : "";
 		item.bannerImg = "";
-		item.changeLog = "";
+		item.changeLog = release.html_url;
 		item._tutorialLink = "";
 		return item;
 	}
