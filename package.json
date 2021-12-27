@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "debian.exe run 'cd /mnt/c/Works/qnap/qnap-store; if [ -f ./init.sh ]; then source ./init.sh; fi; ./make.sh'"
   },
   "author": "",
   "license": "ISC",
