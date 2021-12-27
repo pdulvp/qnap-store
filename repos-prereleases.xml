@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20211227103728</cachechk>
+  <cachechk>20211227112000</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
-   <changeLog></changeLog>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap-intel/releases/tag/10801.10801.4321_10.8.0-alpha3_60bdd8f1</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-intel/10801.10801.4321_10.8.0-alpha3_60bdd8f1/icons/jellyfin_80.gif</icon80>
@@ -20,7 +20,7 @@
    <publishedDate>2021/12/26</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
-   <forumLink><![CDATA[pdulvp]]></forumLink>
+   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
    <language><![CDATA[English]]></language>
    <snapshot></snapshot>
    <bannerImg></bannerImg>
@@ -29,7 +29,7 @@
   <item>
    <name>Standby</name>
    <internalName>pdulvp-nas-standby</internalName>
-   <changeLog></changeLog>
+   <changeLog>https://github.com/pdulvp/qnap-standby/releases/tag/0.1</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby_80.gif</icon80>
@@ -44,7 +44,7 @@
    <publishedDate>2020/12/18</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
-   <forumLink><![CDATA[pdulvp]]></forumLink>
+   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
    <language><![CDATA[English]]></language>
    <snapshot></snapshot>
    <bannerImg></bannerImg>
