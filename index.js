@@ -4,10 +4,10 @@ var fsh = require("@pdulvp/fsh");
 var httph = require("@pdulvp/httph");
 
 var CUSTOM_CONFIGS = {
-	"jellyfin-qnap-intel": "jellyfin/qpkg.cfg"
+	"jellyfin-qnap": "jellyfin/qpkg.cfg"
 }
 var SNAPSHOTS = {
-	"jellyfin-qnap-intel": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
+	"jellyfin-qnap": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
 }
 
 var github = {
