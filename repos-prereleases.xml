@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20220201210018</cachechk>
+  <cachechk>20220222210020</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
@@ -27,30 +27,6 @@
    <tutorialLink><![CDATA[]]></tutorialLink>
   </item>
   <item>
-   <name>Jellyfin HD (Local Display)</name>
-   <internalName>Jellyfin_HD</internalName>
-   <changeLog>https://github.com/pdulvp/jellyfin-qnap-hd/releases/tag/1.0.0</changeLog>
-   <category>pdulvp</category>
-   <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD.gif</icon100>
-   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
-
-   <version>1.0.0</version>
-   <platform>
-    <platformID>TS-NASX86</platformID>
-    <location>https://github.com/pdulvp/jellyfin-qnap-hd/releases/download/1.0.0/Jellyfin_HD_1.0.0.qpkg</location>
-   </platform>
-   <publishedDate>2022/01/16</publishedDate>
-   <maintainer><![CDATA[pdulvp]]></maintainer>
-   <developer><![CDATA[pdulvp]]></developer>
-   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
-   <language><![CDATA[English]]></language>
-   <snapshot></snapshot>
-   <bannerImg></bannerImg>
-   <tutorialLink><![CDATA[]]></tutorialLink>
-  </item>
-  <item>
    <name>Plex HD (Local Display)</name>
    <internalName>Plex_HD</internalName>
    <changeLog>https://github.com/pdulvp/plex-qnap-hd/releases/tag/1.0.0</changeLog>
@@ -64,6 +40,30 @@
    <platform>
     <platformID>TS-NASX86</platformID>
     <location>https://github.com/pdulvp/plex-qnap-hd/releases/download/1.0.0/Plex_HD_1.0.0.qpkg</location>
+   </platform>
+   <publishedDate>2022/01/16</publishedDate>
+   <maintainer><![CDATA[pdulvp]]></maintainer>
+   <developer><![CDATA[pdulvp]]></developer>
+   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
+   <language><![CDATA[English]]></language>
+   <snapshot></snapshot>
+   <bannerImg></bannerImg>
+   <tutorialLink><![CDATA[]]></tutorialLink>
+  </item>
+  <item>
+   <name>Jellyfin HD (Local Display)</name>
+   <internalName>Jellyfin_HD</internalName>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap-hd/releases/tag/1.0.0</changeLog>
+   <category>pdulvp</category>
+   <type>Outils</type>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD.gif</icon100>
+   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
+
+   <version>1.0.0</version>
+   <platform>
+    <platformID>TS-NASX86</platformID>
+    <location>https://github.com/pdulvp/jellyfin-qnap-hd/releases/download/1.0.0/Jellyfin_HD_1.0.0.qpkg</location>
    </platform>
    <publishedDate>2022/01/16</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
