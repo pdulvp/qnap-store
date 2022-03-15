@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20220308210017</cachechk>
+  <cachechk>20220315210018</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
-   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/10.8.0-alpha5-fixes89</changeLog>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/10801.10801.4413_10.8.0-alpha5_30c78f23</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10.8.0-alpha5-fixes89/icons/jellyfin_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10.8.0-alpha5-fixes89/icons/jellyfin.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10801.10801.4413_10.8.0-alpha5_30c78f23/icons/jellyfin_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10801.10801.4413_10.8.0-alpha5_30c78f23/icons/jellyfin.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
    <fwVersion>4.3.3</fwVersion>
    <version>10.8.0-a5</version>
    <platform>
     <platformID>TS-NASX86</platformID>
-    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/10.8.0-alpha5-fixes89/jellyfin_10.8.0-a5.qpkg</location>
+    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/10801.10801.4413_10.8.0-alpha5_30c78f23/jellyfin_10.8.0-a5.qpkg</location>
    </platform>
-   <publishedDate>2022/03/08</publishedDate>
+   <publishedDate>2022/03/10</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
@@ -51,30 +51,6 @@
    <tutorialLink><![CDATA[]]></tutorialLink>
   </item>
   <item>
-   <name>Plex HD (Local Display)</name>
-   <internalName>Plex_HD</internalName>
-   <changeLog>https://github.com/pdulvp/plex-qnap-hd/releases/tag/1.0.0</changeLog>
-   <category>pdulvp</category>
-   <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD.gif</icon100>
-   <description><![CDATA[Unofficial Plex Client for HybridDesk]]></description>
-
-   <version>1.0.0</version>
-   <platform>
-    <platformID>TS-NASX86</platformID>
-    <location>https://github.com/pdulvp/plex-qnap-hd/releases/download/1.0.0/Plex_HD_1.0.0.qpkg</location>
-   </platform>
-   <publishedDate>2022/01/16</publishedDate>
-   <maintainer><![CDATA[pdulvp]]></maintainer>
-   <developer><![CDATA[pdulvp]]></developer>
-   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
-   <language><![CDATA[English]]></language>
-   <snapshot></snapshot>
-   <bannerImg></bannerImg>
-   <tutorialLink><![CDATA[]]></tutorialLink>
-  </item>
-  <item>
    <name>Standby</name>
    <internalName>pdulvp-nas-standby</internalName>
    <changeLog>https://github.com/pdulvp/qnap-standby/releases/tag/0.1</changeLog>
@@ -90,6 +66,30 @@
     <location>https://github.com/pdulvp/qnap-standby/releases/download/0.1/pdulvp-nas-standby_0.1.qpkg</location>
    </platform>
    <publishedDate>2020/12/18</publishedDate>
+   <maintainer><![CDATA[pdulvp]]></maintainer>
+   <developer><![CDATA[pdulvp]]></developer>
+   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
+   <language><![CDATA[English]]></language>
+   <snapshot></snapshot>
+   <bannerImg></bannerImg>
+   <tutorialLink><![CDATA[]]></tutorialLink>
+  </item>
+  <item>
+   <name>Plex HD (Local Display)</name>
+   <internalName>Plex_HD</internalName>
+   <changeLog>https://github.com/pdulvp/plex-qnap-hd/releases/tag/1.0.0</changeLog>
+   <category>pdulvp</category>
+   <type>Outils</type>
+   <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD.gif</icon100>
+   <description><![CDATA[Unofficial Plex Client for HybridDesk]]></description>
+
+   <version>1.0.0</version>
+   <platform>
+    <platformID>TS-NASX86</platformID>
+    <location>https://github.com/pdulvp/plex-qnap-hd/releases/download/1.0.0/Plex_HD_1.0.0.qpkg</location>
+   </platform>
+   <publishedDate>2022/01/16</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
