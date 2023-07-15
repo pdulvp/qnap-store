@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20230714111824</cachechk>
+  <cachechk>20230715140406</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
    <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/10811.10811.4414_f52c85fa</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10811.10811.4414_f52c85fa/icons/jellyfin_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10811.10811.4414_f52c85fa/icons/jellyfin.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10811.10811.4414_f52c85fa/jellyfin/icons/jellyfin_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10811.10811.4414_f52c85fa/jellyfin/icons/jellyfin.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
    <fwVersion>4.3.3</fwVersion>
    <version>10.8.1-1</version>
@@ -32,8 +32,8 @@
    <changeLog>https://github.com/pdulvp/jellyfin-qnap-hd/releases/tag/1.0.0</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/icons/Jellyfin_HD.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/jellyfin/shared/icons/Jellyfin_HD_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/jellyfin/shared/icons/Jellyfin_HD.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
 
    <version>1.0.0</version>
@@ -80,8 +80,8 @@
    <changeLog>https://github.com/pdulvp/plex-qnap-hd/releases/tag/1.0.0</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/icons/Plex_HD.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD.gif</icon100>
    <description><![CDATA[Unofficial Plex Client for HybridDesk]]></description>
 
    <version>1.0.0</version>
