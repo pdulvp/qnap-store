@@ -4,7 +4,7 @@ var fsh = require("@pdulvp/fsh");
 var httph = require("@pdulvp/httph");
 
 var CUSTOM_CONFIGS = {
-  "jellyfin-qnap": "jellyfin/qpkg.cfg",
+  "jellyfin-qnap": "packaging/qpkg.cfg",
   "jellyfin-qnap-hd": "jellyfin/qpkg.cfg",
   "plex-qnap-hd": "plex/qpkg.cfg",
   "qnap-standby": "qpkg.cfg"
@@ -87,7 +87,7 @@ var qpkg = {
     let tag = release.tag_name;
     let item = {};
     let iconPath = ICON_PATH[repository.name] != null ? ICON_PATH[repository.name] : "icons";
-	
+
     item.name = release.configuration["QPKG_DISPLAY_NAME"];
     item.internalName = release.configuration["QPKG_NAME"];
     item.changeLog = release.html_url;
@@ -97,7 +97,7 @@ var qpkg = {
     item.icon100 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/${iconPath}/${item.internalName}.gif`;
     item._description = release.configuration["QPKG_SUMMARY"];
     item.fwVersion = release.configuration["QTS_MINI_VERSION"];
-    item.version = release.configuration["QPKG_VER"];
+    item.version = release.name;
     item.platform = {};
     item.platform.platformID = "TS-NASX86";
     item.platform.location = release.assets[0].browser_download_url;
@@ -201,14 +201,14 @@ function proceed(config) {
       r.item = qpkg.toRepoMetadata(r, r.latestRelease);
     });
     let repos = toRepos(repositories);
-    console.log(JSON.stringify(repos, null, " "));
+    //console.log(JSON.stringify(repos, null, " "));
     fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n` + xml.toXml(repos));
 
     repositories.forEach(r => {
       r.item = qpkg.toRepoMetadata(r, r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease);
     });
     repos = toRepos(repositories);
-    console.log(JSON.stringify(repos, null, " "));
+    //console.log(JSON.stringify(repos, null, " "));
     fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8"?>\n` + xml.toXml(repos));
   });
 }

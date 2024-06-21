@@ -17,3 +17,4 @@ if [ $ADD -ne 0 ] || [ $REM -ne 0 ]; then
 else
     echo -e "\033[0;36mNo need to update the store \033[0m"
 fi
+read
