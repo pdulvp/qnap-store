@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20240621084805</cachechk>
+  <cachechk>20240621085325</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
@@ -12,7 +12,7 @@
    <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/1094.1094.6017-b_9290780e/jellyfin/icons/jellyfin.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
    <fwVersion>4.3.3</fwVersion>
-   <version>10.9.2</version>
+   <version>10.9.4-b</version>
    <platform>
     <platformID>TS-NASX86</platformID>
     <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/1094.1094.6017-b_9290780e/jellyfin_10.9.4.qpkg</location>
