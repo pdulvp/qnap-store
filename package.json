@@ -7,9 +7,5 @@
     "build": "debian.exe run 'cd /mnt/c/Works/qnap/qnap-store; if [ -f ./init.sh ]; then source ./init.sh; fi; ./make.sh'"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@pdulvp/fsh": "^1.0.0",
-    "@pdulvp/httph": "^1.0.0"
-  }
+  "license": "ISC"
 }

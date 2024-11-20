@@ -1,7 +1,7 @@
 const https = require('https')
 var fs = require("fs");
-var fsh = require("@pdulvp/fsh");
-var httph = require("@pdulvp/httph");
+var fsh = require("./fsh");
+var httph = require("./httph");
 
 var CUSTOM_CONFIGS = {
   "jellyfin-qnap": "packaging/qpkg.cfg",
@@ -62,20 +62,6 @@ var github = {
   fileFromTag: function (repository, tag, file) {
     return `/${repository.full_name}/${tag}/${file}`
   }
-};
-
-const concat = (x, y) => x.concat(y)
-
-//From an array of values and a function returning a promise from a value
-//Execute promises sequentially (Promise.all doesn't run sequentially)
-function consecutive(values, fPromise) {
-  return values.reduce((p, value) => {
-    return p.then(() => {
-      return fPromise(value);
-    }).catch(error => {
-      console.log(error);
-    });
-  }, Promise.resolve());
 };
 
 var qpkg = {
