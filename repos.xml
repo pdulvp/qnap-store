@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20251028221258</cachechk>
+  <cachechk>20251029204023</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
-   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/10107.10107.7112.5143-02_c0dcfe7d</changeLog>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/10110.c.712-c_1f43569f</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10107.10107.7112.5143-02_c0dcfe7d/packaging/icons/jellyfin_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10107.10107.7112.5143-02_c0dcfe7d/packaging/icons/jellyfin.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10110.c.712-c_1f43569f/packaging/icons/jellyfin_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/10110.c.712-c_1f43569f/packaging/icons/jellyfin.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.  WARNING: This is a major release; please read changelog above]]></description>
    <fwVersion>4.3.3</fwVersion>
-   <version>10.10.7-02</version>
+   <version>10.11.0-c</version>
    <platform>
     <platformID>TS-NASX86</platformID>
-    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/10107.10107.7112.5143-02_c0dcfe7d/jellyfin_10.10.7-02.qpkg</location>
+    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/10110.c.712-c_1f43569f/jellyfin_10.11.0-c.qpkg</location>
    </platform>
-   <publishedDate>2025/05/07</publishedDate>
+   <publishedDate>2025/10/29</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
@@ -34,7 +34,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/jellyfin/shared/icons/Jellyfin_HD_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.0/jellyfin/shared/icons/Jellyfin_HD.gif</icon100>
-   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
 
    <version>1.0.0</version>
    <platform>
@@ -58,7 +58,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD.gif</icon100>
-   <description><![CDATA[Unofficial Plex Client for HybridDesk  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Unofficial Plex Client for HybridDesk]]></description>
 
    <version>1.0.0</version>
    <platform>
@@ -82,7 +82,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby.gif</icon100>
-   <description><![CDATA[Put your NAS in Standby mode directly through HD-Station  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Put your NAS in Standby mode directly through HD-Station]]></description>
    <fwVersion>4.3.0</fwVersion>
    <version>0.1</version>
    <platform>

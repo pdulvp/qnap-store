@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20251028221302</cachechk>
+  <cachechk>20251029204026</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
@@ -34,7 +34,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.1/jellyfin/shared/icons/Jellyfin_HD_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap-hd/1.0.1/jellyfin/shared/icons/Jellyfin_HD.gif</icon100>
-   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.]]></description>
 
    <version>1.0.1</version>
    <platform>
@@ -58,7 +58,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/plex-qnap-hd/1.0.0/plex/shared/icons/Plex_HD.gif</icon100>
-   <description><![CDATA[Unofficial Plex Client for HybridDesk  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Unofficial Plex Client for HybridDesk]]></description>
 
    <version>1.0.0</version>
    <platform>
@@ -82,7 +82,7 @@
    <type>Outils</type>
    <icon80>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby_80.gif</icon80>
    <icon100>https://raw.githubusercontent.com/pdulvp/qnap-standby/0.1/icons/pdulvp-nas-standby.gif</icon100>
-   <description><![CDATA[Put your NAS in Standby mode directly through HD-Station  WARNING: This is a major release; please read changelog above]]></description>
+   <description><![CDATA[Put your NAS in Standby mode directly through HD-Station]]></description>
    <fwVersion>4.3.0</fwVersion>
    <version>0.1</version>
    <platform>
