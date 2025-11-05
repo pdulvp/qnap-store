@@ -92,6 +92,11 @@ var qpkg = {
     item.icon80 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/${iconPath}/${item.internalName}_80.gif`;
     item.icon100 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/${iconPath}/${item.internalName}.gif`;
     item._description = release.configuration["QPKG_SUMMARY"];
+
+    if (item.name == "jellyfin") {
+      item._description += "  WARNING: This is a major release; please read changelog above"
+    }
+
     item.fwVersion = release.configuration["QTS_MINI_VERSION"];
     item.version = release.name;
     item.platform = {};
@@ -166,8 +171,8 @@ function proceed(config) {
   }).then(repositories => {
     // retrieve qpkg.cfg url
     repositories.forEach(r => {
-      r.latestRelease = r.releases.find(r => !r.prerelease && !r.draft);
-      r.latestPrerelease = r.releases.find(r => r.prerelease && !r.draft && r.reactions.includes("rocket"));
+      r.latestRelease = r.releases.find(a => !a.prerelease && !a.draft);
+      r.latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && r.latestRelease.name.localeCompare(a.name) < 0);
       r.config = CUSTOM_CONFIGS[r.name] != null ? CUSTOM_CONFIGS[r.name] : "qpkg.cfg";
     });
     return Promise.resolve(repositories);
@@ -192,6 +197,7 @@ function proceed(config) {
     });
 
   }).then(repositories => {
+
     repositories.forEach(r => {
       r.item = qpkg.toRepoMetadata(r, r.latestRelease);
     });
@@ -216,5 +222,6 @@ function toRepos(repositories) {
     }
   };
   result.plugins.item = result.plugins.item.filter(item => item != null);
+  result.plugins.item.sort((a, b) => a.name.localeCompare(b.name));
   return result;
 }
