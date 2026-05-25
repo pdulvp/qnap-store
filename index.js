@@ -172,7 +172,7 @@ function proceed(config) {
     // retrieve qpkg.cfg url
     repositories.forEach(r => {
       r.latestRelease = r.releases.find(a => !a.prerelease && !a.draft);
-      r.latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && r.latestRelease.name.localeCompare(a.name) < 0);
+      r.latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && r.latestRelease.created_at.localeCompare(a.created_at) < 0);
       r.config = CUSTOM_CONFIGS[r.name] != null ? CUSTOM_CONFIGS[r.name] : "qpkg.cfg";
     });
     return Promise.resolve(repositories);

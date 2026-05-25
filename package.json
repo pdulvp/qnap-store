@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "qq": "node index.js",
     "build": "debian.exe run 'cd /mnt/c/Works/qnap/qnap-store; if [ -f ./init.sh ]; then source ./init.sh; fi; ./make.sh'",
     "push": "debian.exe run 'cd /mnt/c/Works/qnap/qnap-store; if [ -f ./init.sh ]; then source ./init.sh; fi; ./push.sh'"
   },

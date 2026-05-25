@@ -1,3 +1,3 @@
 #!/bin/bash
 
-../../../Tools/nodejs/node.exe index
+../../../Tools/node-v24.9.0-win-x64/node.exe index
