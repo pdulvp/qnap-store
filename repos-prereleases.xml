@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <plugins>
-  <cachechk>20260915151442</cachechk>
+  <cachechk>20260922122036</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
-   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/1210.b.812-b_b6297ba7</changeLog>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/121.1.812.1_09916b6b</changeLog>
    <category>pdulvp</category>
    <type>Outils</type>
-   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/1210.b.812-b_b6297ba7/packaging/icons/jellyfin_80.gif</icon80>
-   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/1210.b.812-b_b6297ba7/packaging/icons/jellyfin.gif</icon100>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/121.1.812.1_09916b6b/packaging/icons/jellyfin_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/121.1.812.1_09916b6b/packaging/icons/jellyfin.gif</icon100>
    <description><![CDATA[Free Software Media System that puts you in control of managing and streaming your media.  WARNING: This is a major release; please read changelog above]]></description>
    <fwVersion>4.3.3</fwVersion>
-   <version>12.1.0-b</version>
+   <version>12.1.1</version>
    <platform>
     <platformID>TS-NASX86</platformID>
-    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/1210.b.812-b_b6297ba7/jellyfin_12.1.0-b.qpkg</location>
+    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/121.1.812.1_09916b6b/jellyfin_12.1.1.qpkg</location>
    </platform>
-   <publishedDate>2026/09/15</publishedDate>
+   <publishedDate>2026/09/22</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
