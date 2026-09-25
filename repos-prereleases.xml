@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<? xml version = "1.0" encoding = "utf-8" ?>
 
  <plugins>
-  <cachechk>20260925130929</cachechk>
+  <cachechk>20260925140953</cachechk>
   <item>
    <name>jellyfin</name>
    <internalName>jellyfin</internalName>
@@ -42,6 +42,30 @@
     <location>https://github.com/pdulvp/jellyfin-qnap-hd/releases/download/1.0.1/Jellyfin_HD_1.0.1.qpkg</location>
    </platform>
    <publishedDate>2024/11/19</publishedDate>
+   <maintainer><![CDATA[pdulvp]]></maintainer>
+   <developer><![CDATA[pdulvp]]></developer>
+   <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
+   <language><![CDATA[English]]></language>
+   <snapshot></snapshot>
+   <bannerImg></bannerImg>
+   <tutorialLink><![CDATA[]]></tutorialLink>
+  </item>
+  <item>
+   <name>jellyfin-opencl</name>
+   <internalName>jellyfin-opencl</internalName>
+   <changeLog>https://github.com/pdulvp/jellyfin-qnap/releases/tag/121.3.812_718176d7</changeLog>
+   <category>pdulvp</category>
+   <type>Outils</type>
+   <icon80>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/121.3.812_718176d7/packaging-opencl/icons/jellyfin-opencl_80.gif</icon80>
+   <icon100>https://raw.githubusercontent.com/pdulvp/jellyfin-qnap/121.3.812_718176d7/packaging-opencl/icons/jellyfin-opencl.gif</icon100>
+   <description><![CDATA[OpenCL libraries for jellyfin.]]></description>
+   <fwVersion>4.3.3</fwVersion>
+   <version>12.1.3</version>
+   <platform>
+    <platformID>TS-NASX86</platformID>
+    <location>https://github.com/pdulvp/jellyfin-qnap/releases/download/121.3.812_718176d7/jellyfin-opencl_12.1.3.qpkg</location>
+   </platform>
+   <publishedDate>2026/09/24</publishedDate>
    <maintainer><![CDATA[pdulvp]]></maintainer>
    <developer><![CDATA[pdulvp]]></developer>
    <forumLink><![CDATA[https://github.com/pdulvp]]></forumLink>
