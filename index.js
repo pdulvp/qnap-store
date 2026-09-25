@@ -4,18 +4,19 @@ var fsh = require("./fsh");
 var httph = require("./httph");
 
 var CUSTOM_CONFIGS = {
-  "jellyfin-qnap": "packaging/qpkg.cfg",
-  "jellyfin-qnap-hd": "jellyfin/qpkg.cfg",
-  "plex-qnap-hd": "plex/qpkg.cfg",
-  "qnap-standby": "qpkg.cfg"
+  "jellyfin-qnap": ["packaging/qpkg.cfg", "packaging-opencl/qpkg.cfg"],
+  "jellyfin-qnap-hd": ["jellyfin/qpkg.cfg"],
+  "plex-qnap-hd": ["plex/qpkg.cfg"],
+  "qnap-standby": ["qpkg.cfg"]
 }
 var SNAPSHOTS = {
-  "jellyfin-qnap": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
+  "jellyfin": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
 }
 var ICON_PATH = {
-  "jellyfin-qnap": "packaging/icons",
-  "jellyfin-qnap-hd": "jellyfin/shared/icons",
-  "plex-qnap-hd": "plex/shared/icons"
+  "jellyfin-opencl": "packaging-opencl/icons",
+  "jellyfin": "packaging/icons",
+  "Jellyfin_HD": "jellyfin/shared/icons",
+  "Plex_HD": "plex/shared/icons"
 }
 var github = {
 
@@ -48,6 +49,8 @@ var github = {
           repository.releases.forEach((r, i) => {
             let reacts = JSON.parse(reactions[i] == null ? "[]" : reactions[i]);
             r.reactions = reacts.filter(r => r.user.login == "pdulvp").map(x => x.content);
+            r.sname = Number(r.name.replace(/[^\d]/g, ""))
+            r.sname = r.sname < 10000 ? r.sname * 100 : r.sname
           });
           return Promise.resolve(repository);
         }).then(e => {
@@ -59,8 +62,8 @@ var github = {
     });
   },
 
-  fileFromTag: function (repository, tag, file) {
-    return `/${repository.full_name}/${tag}/${file}`
+  fileFromTag: function (fullname, tag, file) {
+    return `/${fullname}/${tag}/${file}`
   }
 };
 
@@ -76,21 +79,22 @@ var qpkg = {
     res.forEach(r => obj[r.split("=")[0]] = qpkg.toValue(r.split("=")[1]));
     return obj;
   },
-  toRepoMetadata: function (repository, release) {
+  toRepoMetadata: function (release) {
     if (release == null) {
       return null;
     }
-    let tag = release.tag_name;
+
+    let tag = release.tag;
     let item = {};
-    let iconPath = ICON_PATH[repository.name] != null ? ICON_PATH[repository.name] : "icons";
+    let iconPath = ICON_PATH[release.configuration["QPKG_NAME"]] != null ? ICON_PATH[release.configuration["QPKG_NAME"]] : "icons";
 
     item.name = release.configuration["QPKG_DISPLAY_NAME"];
     item.internalName = release.configuration["QPKG_NAME"];
     item.changeLog = release.html_url;
     item.category = "pdulvp";
     item.type = "Outils";
-    item.icon80 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/${iconPath}/${item.internalName}_80.gif`;
-    item.icon100 = `https://raw.githubusercontent.com/${repository.full_name}/${tag}/${iconPath}/${item.internalName}.gif`;
+    item.icon80 = `https://raw.githubusercontent.com/${release.fullname}/${tag}/${iconPath}/${item.internalName}_80.gif`;
+    item.icon100 = `https://raw.githubusercontent.com/${release.fullname}/${tag}/${iconPath}/${item.internalName}.gif`;
     item._description = release.configuration["QPKG_SUMMARY"];
 
     if (item.name == "jellyfin") {
@@ -101,13 +105,13 @@ var qpkg = {
     item.version = release.name;
     item.platform = {};
     item.platform.platformID = "TS-NASX86";
-    item.platform.location = release.assets[0].browser_download_url;
+    item.platform.location = release.downloadUrl;
     item.publishedDate = release.created_at.substring(0, 10).replace(/-/g, '/');
     item._maintainer = release.configuration["QPKG_AUTHOR"];
     item._developer = release.configuration["QPKG_AUTHOR"];
     item._forumLink = "https://github.com/pdulvp";
     item._language = "English";
-    item.snapshot = SNAPSHOTS[repository.name] != null ? SNAPSHOTS[repository.name] : "";
+    item.snapshot = SNAPSHOTS[release.configuration["QPKG_NAME"]] != null ? SNAPSHOTS[release.configuration["QPKG_NAME"]] : "";
     item.bannerImg = "";
     item.changeLog = release.html_url;
     item._tutorialLink = "";
@@ -170,22 +174,58 @@ function proceed(config) {
 
   }).then(repositories => {
     // retrieve qpkg.cfg url
-    repositories.forEach(r => {
-      r.latestRelease = r.releases.find(a => !a.prerelease && !a.draft);
-      r.latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && r.latestRelease.created_at.localeCompare(a.created_at) < 0);
-      r.config = CUSTOM_CONFIGS[r.name] != null ? CUSTOM_CONFIGS[r.name] : "qpkg.cfg";
-    });
+    repositories = repositories.map(r => {
+      return CUSTOM_CONFIGS[r.name].map(c => {
+        let latestRelease = r.releases.filter(a => !a.prerelease && !a.draft).map(a => {
+          return {
+            name: r.name,
+            sname: a.sname,
+            fullname: r.full_name,
+            tag: a.tag_name,
+            configuration: a.configuration,
+            html_url: a.html_url,
+            name: a.name,
+            created_at: a.created_at,
+            downloadUrl: a.assets[0].browser_download_url
+          }
+        }).find(a => true)
+        let latestPrerelease = r.releases.filter(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && latestRelease.sname < a.sname).map(a => {
+          return {
+            name: r.name,
+            sname: a.sname,
+            fullname: r.full_name,
+            tag: a.tag_name,
+            configuration: a.configuration,
+            html_url: a.html_url,
+            name: a.name,
+            created_at: a.created_at,
+            downloadUrl: a.assets[0].browser_download_url
+          }
+        }).find(a => true);
+        return {
+          latestRelease: latestRelease,
+          latestPrerelease: latestPrerelease,
+          config: c,
+        };
+      })
+    }).flat(1);
     return Promise.resolve(repositories);
 
   }).then(repositories => {
 
     // fetch and parse qpkg.cfg
     return new Promise((resolve, reject) => {
-      let allStables = repositories.filter(r => r.latestRelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r, r.latestRelease.tag_name, r.config)).then(e => {
+      let allStables = repositories.filter(r => r.latestRelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r.latestRelease.fullname, r.latestRelease.tag, r.config)).then(e => {
         r.latestRelease.configuration = qpkg.toJson(e);
+        if (r.latestRelease.configuration["QPKG_NAME"] == null) {
+          r.latestRelease = null;
+        }
       }));
-      let allPrereleases = repositories.filter(r => r.latestPrerelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r, r.latestPrerelease.tag_name, r.config)).then(e => {
+      let allPrereleases = repositories.filter(r => r.latestPrerelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r.latestRelease.fullname, r.latestPrerelease.tag, r.config)).then(e => {
         r.latestPrerelease.configuration = qpkg.toJson(e);
+        if (r.latestPrerelease.configuration["QPKG_NAME"] == null) {
+          r.latestPrerelease = null;
+        }
       }));
       return Promise.all([...allStables, ...allPrereleases])
         .then(e => {
@@ -197,28 +237,28 @@ function proceed(config) {
     });
 
   }).then(repositories => {
-
-    repositories.forEach(r => {
-      r.item = qpkg.toRepoMetadata(r, r.latestRelease);
-    });
-    let repos = toRepos(repositories);
     console.log(JSON.stringify(repositories[0], null, " "));
-    fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8"?>\n` + xml.toXml(repos));
 
-    repositories.forEach(r => {
-      r.item = qpkg.toRepoMetadata(r, r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease);
-    });
-    repos = toRepos(repositories);
-    fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8"?>\n` + xml.toXml(repos));
+    let items = repositories.map(r => {
+      return qpkg.toRepoMetadata(r.latestRelease);
+    }).filter(r => r != null);
+    let repos = toRepos(items);
+    fsh.write("repos.xml", `<? xml version = "1.0" encoding = "utf-8" ?>\n` + xml.toXml(repos));
+
+    items = repositories.map(r => {
+      return qpkg.toRepoMetadata(r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease);
+    }).filter(r => r != null);
+    repos = toRepos(items);
+    fsh.write("repos-prereleases.xml", `<? xml version = "1.0" encoding = "utf-8" ?>\n` + xml.toXml(repos));
   });
 }
 
-function toRepos(repositories) {
+function toRepos(items) {
   let cachechk = new Date().toISOString().replace(/-/g, '').replace(/[T\\:]/g, '').replace(/\..+/, '');
   let result = {
     plugins: {
       cachechk: cachechk,
-      item: repositories.map(r => r.item)
+      item: items
     }
   };
   result.plugins.item = result.plugins.item.filter(item => item != null);
