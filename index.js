@@ -243,13 +243,13 @@ function proceed(config) {
       return qpkg.toRepoMetadata(r.latestRelease);
     }).filter(r => r != null);
     let repos = toRepos(items);
-    fsh.write("repos.xml", `<? xml version = "1.0" encoding = "utf-8" ?>\n` + xml.toXml(repos));
+    fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
 
     items = repositories.map(r => {
       return qpkg.toRepoMetadata(r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease);
     }).filter(r => r != null);
     repos = toRepos(items);
-    fsh.write("repos-prereleases.xml", `<? xml version = "1.0" encoding = "utf-8" ?>\n` + xml.toXml(repos));
+    fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
   });
 }
 
