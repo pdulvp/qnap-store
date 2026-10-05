@@ -2,6 +2,8 @@
 
 You can ease installation of updates by adding my repositories on your QNAP settings.
 
+
+
 There is two repositories : 
 
 - `Releases` [https://pdulvp.github.io/qnap-store/repos.xml](https://pdulvp.github.io/qnap-store/repos.xml) to retrieve only stable releases
