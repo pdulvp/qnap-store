@@ -26,7 +26,8 @@ var httph = {
         port: 443,
         path: path,
         method: method,
-        headers: {}
+        headers: {},
+        rejectUnauthorized: true
       };
       if (data != undefined) {
         options.headers['Content-Type'] = 'application/json';
@@ -72,7 +73,8 @@ var httph = {
       var options = {
         host: host,
         port: 443,
-        path: path
+        path: path,
+        rejectUnauthorized: true
       };
 
       var file = fs.createWriteStream(outputFile);
