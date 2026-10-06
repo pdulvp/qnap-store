@@ -105,7 +105,7 @@ var qpkg = {
     item.version = release.name;
     item.platform = {};
     item.platform.platformID = "TS-NASX86";
-    item.platform.location = release.downloadUrl;
+    item.platform.location = release.assets.filter(a => a.name.startsWith(`${item.internalName}_`) && !a.isArm)[0].location;
     item.publishedDate = release.created_at.substring(0, 10).replace(/-/g, '/');
     item._maintainer = release.configuration["QPKG_AUTHOR"];
     item._developer = release.configuration["QPKG_AUTHOR"];
@@ -176,8 +176,10 @@ function proceed(config) {
     // retrieve qpkg.cfg url
     repositories = repositories.map(r => {
       return CUSTOM_CONFIGS[r.name].map(c => {
-        let latestRelease = r.releases.filter(a => !a.prerelease && !a.draft).map(a => {
-          return {
+        let latestRelease = r.releases.find(a => !a.prerelease && !a.draft)
+        let latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && latestRelease.sname < a.sname)
+        let toRelease = (a) => {
+          return a == null ? null : {
             name: r.name,
             sname: a.sname,
             fullname: r.full_name,
@@ -186,26 +188,13 @@ function proceed(config) {
             html_url: a.html_url,
             name: a.name,
             created_at: a.created_at,
-            downloadUrl: a.assets[0].browser_download_url
+            assets: a.assets.filter(asset => asset.name.endsWith(".qpkg")).map(asset => { return { name: asset.name, isArm: asset.name.includes("arm64"), location: asset.browser_download_url } })
           }
-        }).find(a => true)
-        let latestPrerelease = r.releases.filter(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && latestRelease.sname < a.sname).map(a => {
-          return {
-            name: r.name,
-            sname: a.sname,
-            fullname: r.full_name,
-            tag: a.tag_name,
-            configuration: a.configuration,
-            html_url: a.html_url,
-            name: a.name,
-            created_at: a.created_at,
-            downloadUrl: a.assets[0].browser_download_url
-          }
-        }).find(a => true);
+        };
         return {
-          latestRelease: latestRelease,
-          latestPrerelease: latestPrerelease,
-          config: c,
+          latestRelease: toRelease(latestRelease),
+          latestPrerelease: toRelease(latestPrerelease),
+          config: c
         };
       })
     }).flat(1);
