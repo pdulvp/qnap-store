@@ -14,9 +14,6 @@ const API_HOST = "api.github.com";
 const RAW_HOST = "raw.githubusercontent.com";
 
 const githubh = {
-  user: null,
-  password: null,
-
   /**
    * Search repositories by topic
    * @param {string} topic - The topic to search for
@@ -25,7 +22,7 @@ const githubh = {
    */
   searchRepositoriesByTopic: async function (topic, page) {
     const path = `/search/repositories?q=topic:${topic}&sort=stars&order=desc&page=${page}`;
-    return httph.request(API_HOST, path, undefined, "GET", githubh.user, githubh.password);
+    return httph.get(API_HOST, path);
   },
 
   /**
@@ -34,8 +31,7 @@ const githubh = {
    * @returns {Promise<string>} JSON string of releases
    */
   getReleases: async function (fullname) {
-    const path = `/repos/${fullname}/releases`;
-    return httph.request(API_HOST, path, undefined, "GET", githubh.user, githubh.password);
+    return httph.get(API_HOST, `/repos/${fullname}/releases`);
   },
 
   /**
@@ -45,8 +41,7 @@ const githubh = {
    * @returns {Promise<string>} JSON string of reactions
    */
   getReleaseReactions: async function (fullname, releaseId) {
-    const path = `/repos/${fullname}/releases/${releaseId}/reactions`;
-    return httph.request(API_HOST, path, undefined, "GET", githubh.user, githubh.password);
+    return httph.get(API_HOST, `/repos/${fullname}/releases/${releaseId}/reactions`);
   },
 
   /**
@@ -57,17 +52,7 @@ const githubh = {
    * @returns {Promise<string>} File content
    */
   getFileFromTag: async function (fullname, tag, filePath) {
-    const path = `/${fullname}/${tag}/${filePath}`;
-    return httph.request(RAW_HOST, path, undefined, "GET", githubh.user, githubh.password);
-  },
-
-  /**
-   * Get file from raw content URL
-   * @param {string} path - Full path including host
-   * @returns {Promise<string>} File content
-   */
-  getRawFile: async function (path) {
-    return httph.request(RAW_HOST, path, undefined, "GET", githubh.user, githubh.password);
+    return httph.get(RAW_HOST, `/${fullname}/${tag}/${filePath}`);
   }
 };
 

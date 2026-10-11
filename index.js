@@ -155,8 +155,6 @@ var xml = {
     const config = JSON.parse(configData);
     httph.user = config.user;
     httph.password = config.password;
-    githubh.user = config.user;
-    githubh.password = config.password;
 
     // Get repositories by topic
     let repositories = await github.getRepositoriesByTopic("qnap-store");

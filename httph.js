@@ -8,39 +8,34 @@
  @author: pdulvp@laposte.net
 */
 
-// helpers for http requests using modern fetch API (Node 18+)
+// helpers for http GET requests using modern fetch API (Node 18+)
+
 const httph = {
   user: null,
   password: null,
 
-  request: async function (host, path, object, method, user, password) {
+  /**
+   * Perform a GET request to a host and path
+   * @param {string} host - The host (e.g., "api.github.com")
+   * @param {string} path - The path (e.g., "/repos/owner/repo")
+   * @returns {Promise<string>} The response body as text
+   */
+  get: async function (host, path) {
     const url = `https://${host}${path}`;
     
     const headers = {};
-    let body = undefined;
     
-    if (object !== undefined) {
-      body = JSON.stringify(object);
-      headers['Content-Type'] = 'application/json';
+    if (httph.user) {
+      headers["User-Agent"] = httph.user;
+    }
+    if (httph.password) {
+      headers["Authorization"] = "Basic " + Buffer.from(httph.user + ":" + httph.password).toString("base64");
     }
 
-    if (user) {
-      headers["User-Agent"] = user;
-    }
-    if (password) {
-      headers["Authorization"] = "Basic " + Buffer.from(user + ":" + password).toString("base64");
-    }
-
-    const options = {
-      method: method || 'GET',
+    const response = await fetch(url, {
+      method: 'GET',
       headers: headers
-    };
-    
-    if (body !== undefined) {
-      options.body = body;
-    }
-
-    const response = await fetch(url, options);
+    });
     
     if (!response.ok) {
       const result = await response.text();
@@ -51,25 +46,6 @@ const httph = {
     }
     
     return await response.text();
-  },
-
-  downloadFile: async function (host, path, outputFile) {
-    const fs = require('fs/promises');
-    const url = `https://${host}${path}`;
-    
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.arrayBuffer();
-    await fs.writeFile(outputFile, Buffer.from(data));
-    return outputFile;
-  },
-
-  get: async function (host, path) {
-    return httph.request(host, path, undefined, "GET", httph.user, httph.password);
   }
 };
 
