@@ -7,90 +7,68 @@
  SPDX-License-Identifier: CC-BY-NC-ND-4.0
  @author: pdulvp@laposte.net
 */
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
 
-//helpers for http requests
-var httph = {
+// helpers for http requests using modern fetch API (Node 18+)
+const httph = {
+  user: null,
+  password: null,
 
-  request: function (host, path, object, method, user, password) {
-    return new Promise((resolve, reject) => {
+  request: async function (host, path, object, method, user, password) {
+    const url = `https://${host}${path}`;
+    
+    const headers = {};
+    let body = undefined;
+    
+    if (object !== undefined) {
+      body = JSON.stringify(object);
+      headers['Content-Type'] = 'application/json';
+    }
 
-      var data = undefined;
-      if (object != undefined) {
-        data = JSON.stringify(object);
+    if (user) {
+      headers["User-Agent"] = user;
+    }
+    if (password) {
+      headers["Authorization"] = "Basic " + Buffer.from(user + ":" + password).toString("base64");
+    }
+
+    const options = {
+      method: method || 'GET',
+      headers: headers
+    };
+    
+    if (body !== undefined) {
+      options.body = body;
+    }
+
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      const result = await response.text();
+      if (result != undefined && result.message != undefined && result.message.includes("Bad credentials")) {
+        throw new Error(result);
       }
-      var options = {
-        host: host,
-        port: 443,
-        path: path,
-        method: method,
-        headers: {}
-      };
-      if (data != undefined) {
-        options.headers['Content-Type'] = 'application/json';
-        options.headers['Content-Length'] = Buffer.byteLength(data);
-      }
-
-      if (user) {
-        options.headers["User-Agent"] = user;
-      }
-      if (password) {
-        options.headers["Authorization"] = "Basic " + Buffer.from(user + ":" + password).toString("base64");
-      }
-
-      var req = https.request(options, function (res) {
-        let body = '';
-        res.on('data', function (chunk) {
-          body += chunk;
-        });
-        res.on('end', function () {
-          result = body;
-
-          if (result != undefined && result.message != undefined && result.message.includes("Bad credentials")) {
-            reject(result);
-          } else {
-            resolve(result);
-          }
-        });
-
-      }).on('error', function (e) {
-        console.log("Got error: " + e.message);
-        reject(e);
-      });
-
-      if (data != undefined) {
-        req.write(data);
-      }
-      req.end();
-    });
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.text();
   },
 
-  downloadFile: function (host, path, outputFile) {
-    return new Promise((resolve, reject) => {
-      var options = {
-        host: host,
-        port: 443,
-        path: path
-      };
-
-      var file = fs.createWriteStream(outputFile);
-      https.get(options, function (res) {
-        res.on('data', function (data) {
-          file.write(data);
-        }).on('end', function () {
-          file.end();
-          resolve(outputFile);
-        });
-      }).on('error', function (e) {
-        console.log("Got error: " + e.message);
-        reject(e);
-      });
-    });
+  downloadFile: async function (host, path, outputFile) {
+    const fs = require('fs/promises');
+    const url = `https://${host}${path}`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.arrayBuffer();
+    await fs.writeFile(outputFile, Buffer.from(data));
+    return outputFile;
   },
 
-  get: function (host, path) {
+  get: async function (host, path) {
     return httph.request(host, path, undefined, "GET", httph.user, httph.password);
   }
 };

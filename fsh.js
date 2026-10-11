@@ -7,84 +7,59 @@
  SPDX-License-Identifier: CC-BY-NC-ND-4.0
  @author: pdulvp@laposte.net
 */
-const fs = require('fs');
+const fs = require('fs/promises');
 
-var fsh = {
-  
-    delete: function (filename) {
-      return new Promise(function(resolve, reject) {
-          fs.unlink(filename, function(err) {
-              resolve(filename);
-          });
-      });
-    },
-  
-    move: function (oldPath, newPath) {
-      return new Promise(function(resolve, reject) {
-          fs.rename(oldPath, newPath, function (err) {
-              if (err) reject(err);
-              else resolve(newPath);
-          });
-      });
-    },
-  
-    write: function (filename, data) {
-        return new Promise(function(resolve, reject) {
-            if (!(typeof data === 'string' || data instanceof String)) {
-                data = JSON.stringify(data, null, " ");
-            }
-            fs.writeFile(filename, data, 'UTF-8', function(err) {
-                if (err) reject(err);
-                else resolve(data);
-            });
-        });
-    },
-    
-    writeIfChange: function (filename, data) {
-        if (!(typeof data === 'string' || data instanceof String)) {
-            data = JSON.stringify(data, null, " ");
-        }
-        if (fsh.fileExists(filename)) {
-            return fsh.read(filename).then(e => {
-                if (e != data) {
-                    return fsh.write(filename, data);
-                } else {
-                    return Promise.resolve(filename);
-                }
-            })
-        } else {
-            return fsh.write(filename, data);
-        }
-    },
+const fsh = {
 
-    read: function(filename) {
-        return new Promise(function(resolve, reject) {
-            fs.readFile(filename, 'UTF-8', function(err, data){
-                if (err) {
-                    reject(err); 
-                }
-                else 
-                    resolve(data);
-            });
-        });
-    },
-  
-    fileExists: function(filename) {
-        try
-        {
-            return fs.statSync(filename).isFile();
-        }
-        catch (err)
-        {
-            if (err.code == 'ENOENT') { // no such file or directory. File really does not exist
-                console.log("File does not exist.");
-                return false;
-            }
-            //console.log("Exception fs.statSync (" + path + "): " + err);
-            return false; // something else went wrong, we don't have rights, ...
-        }
-    }	
-  
-  };
+  delete: async function (filename) {
+    await fs.unlink(filename);
+    return filename;
+  },
 
-  module.exports = fsh;
+  move: async function (oldPath, newPath) {
+    await fs.rename(oldPath, newPath);
+    return newPath;
+  },
+
+  write: async function (filename, data) {
+    if (!(typeof data === 'string' || data instanceof String)) {
+      data = JSON.stringify(data, null, " ");
+    }
+    await fs.writeFile(filename, data, 'UTF-8');
+    return data;
+  },
+
+  writeIfChange: async function (filename, data) {
+    if (!(typeof data === 'string' || data instanceof String)) {
+      data = JSON.stringify(data, null, " ");
+    }
+    if (await fsh.fileExists(filename)) {
+      const existing = await fsh.read(filename);
+      if (existing !== data) {
+        return fsh.write(filename, data);
+      } else {
+        return filename;
+      }
+    } else {
+      return fsh.write(filename, data);
+    }
+  },
+
+  read: async function (filename) {
+    return await fs.readFile(filename, 'UTF-8');
+  },
+
+  fileExists: async function (filename) {
+    try {
+      const stats = await fs.stat(filename);
+      return stats.isFile();
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        return false;
+      }
+      return false;
+    }
+  }
+};
+
+module.exports = fsh;

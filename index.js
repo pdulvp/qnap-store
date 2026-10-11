@@ -1,69 +1,66 @@
-const https = require('https')
+const https = require('https');
 var fs = require("fs");
 var fsh = require("./fsh");
 var httph = require("./httph");
+var githubh = require("./githubh");
 
 var CUSTOM_CONFIGS = {
   "jellyfin-qnap": ["packaging/qpkg.cfg", "packaging-opencl/qpkg.cfg"],
   "jellyfin-qnap-hd": ["jellyfin/qpkg.cfg"],
   "plex-qnap-hd": ["plex/qpkg.cfg"],
   "qnap-standby": ["qpkg.cfg"]
-}
+};
 var SNAPSHOTS = {
   "jellyfin": "https://user-images.githubusercontent.com/1305249/51093385-b520ed00-17ee-11e9-98e9-abae759a71d3.PNG"
-}
+};
 var ICON_PATH = {
   "jellyfin-opencl": "packaging-opencl/icons",
   "jellyfin": "packaging/icons",
   "Jellyfin_HD": "jellyfin/shared/icons",
   "Plex_HD": "plex/shared/icons"
-}
+};
 var github = {
 
-  getRepositoriesByTopic: function (topic) {
-    return new Promise((resolve, reject) => {
-      //we suppose that there is at most 3 pages of milestones
-      return Promise.all([1, 2, 3].map(m => httph.get("api.github.com", '/search/repositories?q=topic:' + topic + '&sort=stars&order=desc&page=' + m))).then(e => {
-        let resultPages = e.reduce(function (arr, row) {
-          return arr.concat(JSON.parse(row).items);
-        }, []);
-        resolve(resultPages);
-      }).catch(e => {
-        reject(e);
-      });
-    });
+  getRepositoriesByTopic: async function (topic) {
+    // we suppose that there is at most 3 pages of repositories
+    const pages = await Promise.all([1, 2, 3].map(m => 
+      githubh.searchRepositoriesByTopic(topic, m)
+    ));
+    
+    const resultPages = pages.reduce(function (arr, row) {
+      return arr.concat(JSON.parse(row).items);
+    }, []);
+    
+    return resultPages;
   },
 
   filterByOwner: function (repositories, owner) {
-    return Promise.resolve(repositories.filter(t => t.owner.login == owner));
+    return repositories.filter(t => t.owner.login == owner);
   },
 
-  releases: function (repository) {
-    return new Promise((resolve, reject) => {
-      //we suppose that there is at most 3 pages of releases
-      return httph.get("api.github.com", `/repos/${repository.full_name}/releases`).then(e => {
-        repository.releases = JSON.parse(e);
-        return Promise.resolve(repository);
-      }).then(repository => {
-        Promise.all(repository.releases.map(r => httph.get("api.github.com", `/repos/${repository.full_name}/releases/${r.id}/reactions`))).then(reactions => {
-          repository.releases.forEach((r, i) => {
-            let reacts = JSON.parse(reactions[i] == null ? "[]" : reactions[i]);
-            r.reactions = reacts.filter(r => r.user.login == "pdulvp").map(x => x.content);
-            r.sname = Number(r.name.replace(/[^\d]/g, ""))
-            r.sname = r.sname < 10000 ? r.sname * 100 : r.sname
-          });
-          return Promise.resolve(repository);
-        }).then(e => {
-          resolve(repository);
-        })
-      }).catch(e => {
-        reject(e);
-      });
+  releases: async function (repository) {
+    // we suppose that there is at most 3 pages of releases
+    const data = await githubh.getReleases(repository.full_name);
+    repository.releases = JSON.parse(data);
+    
+    const reactions = await Promise.all(
+      repository.releases.map(r => 
+        githubh.getReleaseReactions(repository.full_name, r.id)
+      )
+    );
+    
+    repository.releases.forEach((r, i) => {
+      let reacts = JSON.parse(reactions[i] == null ? "[]" : reactions[i]);
+      r.reactions = reacts.filter(r => r.user.login == "pdulvp").map(x => x.content);
+      r.sname = Number(r.name.replace(/[^\d]/g, ""));
+      r.sname = r.sname < 10000 ? r.sname * 100 : r.sname;
     });
+    
+    return repository;
   },
 
   fileFromTag: function (fullname, tag, file) {
-    return `/${fullname}/${tag}/${file}`
+    return `/${fullname}/${tag}/${file}`;
   }
 };
 
@@ -98,7 +95,7 @@ var qpkg = {
     item._description = release.configuration["QPKG_SUMMARY"];
 
     if (item.name == "jellyfin") {
-      item._description += "  WARNING: This is a major release; please read changelog above"
+      item._description += "  WARNING: This is a major release; please read changelog above";
     }
 
     item.fwVersion = release.configuration["QTS_MINI_VERSION"];
@@ -148,36 +145,35 @@ var xml = {
     }
     return result;
   }
-}
+};
 
-//Load configuration and proceed
-fsh.read("config.json").then(e => proceed(JSON.parse(e))).catch(e => { console.log(e); });
+// Main entry point using async/await
+(async function main() {
+  try {
+    // Load configuration
+    const configData = await fsh.read("config.json");
+    const config = JSON.parse(configData);
+    httph.user = config.user;
+    httph.password = config.password;
+    githubh.user = config.user;
+    githubh.password = config.password;
 
-function proceed(config) {
-  httph.user = config.user;
-  httph.password = config.password;
+    // Get repositories by topic
+    let repositories = await github.getRepositoriesByTopic("qnap-store");
+    repositories = github.filterByOwner(repositories, "pdulvp");
 
-  github.getRepositoriesByTopic("qnap-store").then(e => {
-    return github.filterByOwner(e, "pdulvp");
+    // Compute releases for all repositories
+    repositories = await Promise.all(repositories.map(r => github.releases(r)));
+    repositories = repositories.reduce(function (arr, row) {
+      return arr.concat(row);
+    }, []);
 
-  }).then(repositories => {
-    // compute releases
-    return new Promise((resolve, reject) => {
-      return Promise.all(repositories.map(r => github.releases(r))).then(e => {
-        resolve(e.reduce(function (arr, row) {
-          return arr.concat(row);
-        }, []));
-      }).catch(e => {
-        reject(e);
-      });
-    });
-
-  }).then(repositories => {
-    // retrieve qpkg.cfg url
+    // Retrieve qpkg.cfg url for each repository/config pair
     repositories = repositories.map(r => {
       return CUSTOM_CONFIGS[r.name].map(c => {
-        let latestRelease = r.releases.find(a => !a.prerelease && !a.draft)
-        let latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && latestRelease.sname < a.sname)
+        let latestRelease = r.releases.find(a => !a.prerelease && !a.draft);
+        let latestPrerelease = r.releases.find(a => a.prerelease && !a.draft && a.reactions.includes("rocket") && latestRelease && latestRelease.sname < a.sname);
+        
         let toRelease = (a) => {
           return a == null ? null : {
             name: r.name,
@@ -188,59 +184,56 @@ function proceed(config) {
             html_url: a.html_url,
             name: a.name,
             created_at: a.created_at,
-            assets: a.assets.filter(asset => asset.name.endsWith(".qpkg")).map(asset => { return { name: asset.name, isArm: asset.name.includes("arm64"), location: asset.browser_download_url } })
-          }
+            assets: a.assets.filter(asset => asset.name.endsWith(".qpkg")).map(asset => { 
+              return { name: asset.name, isArm: asset.name.includes("arm64"), location: asset.browser_download_url }; 
+            })
+          };
         };
+        
         return {
           latestRelease: toRelease(latestRelease),
           latestPrerelease: toRelease(latestPrerelease),
           config: c
         };
-      })
+      });
     }).flat(1);
-    return Promise.resolve(repositories);
 
-  }).then(repositories => {
-
-    // fetch and parse qpkg.cfg
-    return new Promise((resolve, reject) => {
-      let allStables = repositories.filter(r => r.latestRelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r.latestRelease.fullname, r.latestRelease.tag, r.config)).then(e => {
-        r.latestRelease.configuration = qpkg.toJson(e);
+    // Fetch and parse qpkg.cfg files
+    await Promise.all([
+      ...repositories.filter(r => r.latestRelease != null).map(async r => {
+        const data = await githubh.getFileFromTag(r.latestRelease.fullname, r.latestRelease.tag, r.config);
+        r.latestRelease.configuration = qpkg.toJson(data);
         if (r.latestRelease.configuration["QPKG_NAME"] == null) {
           r.latestRelease = null;
         }
-      }));
-      let allPrereleases = repositories.filter(r => r.latestPrerelease != null).map(r => httph.get("raw.githubusercontent.com", github.fileFromTag(r.latestRelease.fullname, r.latestPrerelease.tag, r.config)).then(e => {
-        r.latestPrerelease.configuration = qpkg.toJson(e);
+      }),
+      ...repositories.filter(r => r.latestPrerelease != null).map(async r => {
+        const data = await githubh.getFileFromTag(r.latestRelease.fullname, r.latestPrerelease.tag, r.config);
+        r.latestPrerelease.configuration = qpkg.toJson(data);
         if (r.latestPrerelease.configuration["QPKG_NAME"] == null) {
           r.latestPrerelease = null;
         }
-      }));
-      return Promise.all([...allStables, ...allPrereleases])
-        .then(e => {
-          resolve(repositories);
+      })
+    ]);
 
-        }).catch(e => {
-          reject(e);
-        });
-    });
-
-  }).then(repositories => {
+    // Log first repository for debugging
     console.log(JSON.stringify(repositories[0], null, " "));
 
-    let items = repositories.map(r => {
-      return qpkg.toRepoMetadata(r.latestRelease);
-    }).filter(r => r != null);
+    // Generate stable repos XML
+    let items = repositories.map(r => qpkg.toRepoMetadata(r.latestRelease)).filter(r => r != null);
     let repos = toRepos(items);
-    fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
+    await fsh.write("repos.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
 
-    items = repositories.map(r => {
-      return qpkg.toRepoMetadata(r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease);
-    }).filter(r => r != null);
+    // Generate prerelease repos XML
+    items = repositories.map(r => qpkg.toRepoMetadata(r.latestPrerelease != null ? r.latestPrerelease : r.latestRelease)).filter(r => r != null);
     repos = toRepos(items);
-    fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
-  });
-}
+    await fsh.write("repos-prereleases.xml", `<?xml version="1.0" encoding="utf-8" ?>\n` + xml.toXml(repos));
+
+  } catch (e) {
+    console.log(e);
+    process.exit(1);
+  }
+})();
 
 function toRepos(items) {
   let cachechk = new Date().toISOString().replace(/-/g, '').replace(/[T\\:]/g, '').replace(/\..+/, '');
